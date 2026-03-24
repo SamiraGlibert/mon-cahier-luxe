@@ -3,58 +3,81 @@ import React, { useState } from 'react';
 const NoteEditor = () => {
   const [activeTab, setActiveTab] = useState('Notes');
   const [notes, setNotes] = useState('');
-  const [typeEvent, setTypeEvent] = useState('Examen'); // Le menu déroulant
 
-  const startVoice = () => {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'fr-FR';
-    recognition.onresult = (e) => setNotes(prev => prev + ' ' + e.results[0][0].transcript);
-    recognition.start();
-  };
+  // Styles Modernes
+  const gold = '#d4af37';
+  const dark = '#121212';
+  const card = '#1e1e1e';
 
   return (
-    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#0f0e0c', color: '#d4af37', fontFamily: 'serif' }}>
+    <div style={{ display: 'flex', height: '100vh', backgroundColor: dark, color: '#fff', fontFamily: 'sans-serif' }}>
       
-      {/* MENU LATÉRAL */}
-      <div style={{ width: '180px', borderRight: '1px solid #d4af37', padding: '20px 0', background: '#0a0a0a' }}>
+      {/* SIDEBAR MODERNE */}
+      <div style={{ width: '220px', backgroundColor: '#000', padding: '30px 15px', borderRight: `1px solid ${gold}44` }}>
+        <h2 style={{ color: gold, fontSize: '1.2rem', textAlign: 'center', marginBottom: '40px', letterSpacing: '3px' }}>LUXE NOTE</h2>
         {['Notes', 'Agenda', 'Outils'].map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)} style={{
-            width: '100%', padding: '15px', backgroundColor: activeTab === tab ? '#d4af37' : 'transparent',
-            color: activeTab === tab ? '#000' : '#d4af37', border: 'none', cursor: 'pointer', fontWeight: 'bold', marginBottom: '10px'
+            width: '100%', padding: '12px', marginBottom: '15px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+            backgroundColor: activeTab === tab ? gold : 'transparent',
+            color: activeTab === tab ? '#000' : gold,
+            fontWeight: 'bold', transition: '0.3s', textAlign: 'left', paddingLeft: '20px'
           }}> {tab.toUpperCase()} </button>
         ))}
       </div>
 
-      {/* CONTENU DYNAMIQUE */}
-      <div style={{ flex: 1, padding: '40px' }}>
+      {/* CONTENU PRINCIPAL */}
+      <div style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
         
         {activeTab === 'Notes' && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h2>PRISE DE NOTES</h2>
-              <button onClick={startVoice} style={{ backgroundColor: '#d4af37', color: '#000', border: 'none', padding: '10px 20px', fontWeight: 'bold', cursor: 'pointer' }}>🎤 DICTÉE VOCALE</button>
-            </div>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} style={{ width: '100%', height: '300px', backgroundColor: '#1a1a1a', color: '#fff', border: '1px solid #d4af37', padding: '20px' }} />
+          <div style={{ animation: 'fadeIn 0.5s' }}>
+             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h1 style={{ color: gold }}>Mes Notes</h1>
+                <button style={{ backgroundColor: gold, border: 'none', padding: '10px 20px', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer' }}>🎤 Dicter</button>
+             </div>
+             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Commencez à rédiger..." 
+               style={{ width: '100%', height: '70vh', backgroundColor: card, color: '#eee', border: `1px solid ${gold}33`, borderRadius: '15px', padding: '25px', fontSize: '1.1rem', outline: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }} />
           </div>
         )}
 
         {activeTab === 'Agenda' && (
-          <div>
-            <h2>AGENDA INTELLIGENT</h2>
-            <div style={{ marginTop: '20px', border: '1px solid #d4af37', padding: '20px', background: '#1a1a1a' }}>
-              <label>Type d'événement : </label>
-              {/* VOICI LE MENU DÉROULANT QUI FONCTIONNE */}
-              <select value={typeEvent} onChange={(e) => setTypeEvent(e.target.value)} style={{ padding: '10px', background: '#000', color: '#d4af37', border: '1px solid #d4af37', marginLeft: '10px' }}>
-                <option value="Examen">📅 Date d'Examen</option>
-                <option value="Dépôt">📤 Date de Dépôt (Cours)</option>
-                <option value="Révision">📖 Séance de Révision</option>
-              </select>
-              <p style={{ marginTop: '20px' }}>Vous avez sélectionné : <strong>{typeEvent}</strong></p>
+          <div style={{ animation: 'fadeIn 0.5s' }}>
+            <h1 style={{ color: gold, marginBottom: '30px' }}>Agenda Intelligent</h1>
+            <div style={{ backgroundColor: card, padding: '25px', borderRadius: '15px', border: `1px solid ${gold}44` }}>
+              <p style={{ marginBottom: '15px' }}>Planifier un événement :</p>
+              <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                <input type="date" style={{ padding: '10px', borderRadius: '8px', border: 'none' }} />
+                <select style={{ padding: '10px', borderRadius: '8px', backgroundColor: '#333', color: gold, border: 'none' }}>
+                  <option>Examen</option>
+                  <option>Dépôt de cours</option>
+                  <option>Rappel</option>
+                </select>
+                <button style={{ backgroundColor: gold, padding: '10px 20px', borderRadius: '8px', border: 'none', fontWeight: 'bold' }}>Enregistrer</button>
+              </div>
             </div>
           </div>
         )}
 
+        {activeTab === 'Outils' && (
+          <div style={{ animation: 'fadeIn 0.5s' }}>
+            <h1 style={{ color: gold, marginBottom: '30px' }}>Widgets</h1>
+            <div style={{ display: 'flex', gap: '30px' }}>
+              <div style={{ backgroundColor: card, padding: '20px', borderRadius: '15px', border: `1px solid ${gold}44`, width: '250px' }}>
+                <h3 style={{ color: gold }}>Calculatrice</h3>
+                <div style={{ background: '#000', height: '40px', marginBottom: '10px', borderRadius: '5px' }}></div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px' }}>
+                  {[1,2,3,'+',4,5,6,'-',7,8,9,'*',0,'C','=','/'].map(n => (
+                    <button key={n} style={{ padding: '10px', background: '#333', color: gold, border: 'none', borderRadius: '5px' }}>{n}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
     </div>
   );
 };
